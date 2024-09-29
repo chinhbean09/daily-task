@@ -1,5 +1,6 @@
 package com.example.task_manager;
 
+import android.database.Cursor;
 import android.os.Bundle;
 import android.util.Log;
 import android.widget.Toast;
@@ -18,18 +19,27 @@ public class TaskList extends AppCompatActivity implements SelectListener {
     private ArrayList<TaskModel> tasks = new ArrayList<>();
     TaskRecyclerViewAdapter adapter;
     RecyclerView recyclerView;
+    MyDatabaseHelper myDB;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         EdgeToEdge.enable(this);
         setContentView(R.layout.activity_task_list);
+        myDB = new MyDatabaseHelper(TaskList.this);
+        setupTaskList();
         displayItems();
     }
 
     private void setupTaskList() {
-        Bundle extras = getIntent().getExtras();
-        if (extras != null) {
+        Cursor cursor = myDB.readAllData();
+        if (cursor.getCount() == 0) {
+            Toast.makeText(this, "No data. ", Toast.LENGTH_SHORT).show();
+        } else {
+            while (cursor.moveToNext()) {
+                TaskModel task = new TaskModel(cursor.getString(1), cursor.getString(2));
+                tasks.add(task);
+            }
         }
     }
 
