@@ -1,12 +1,15 @@
 package com.example.task_manager;
 
+import android.content.Intent;
 import android.database.Cursor;
 import android.os.Bundle;
 import android.util.Log;
 import android.widget.Toast;
 
 import androidx.activity.EdgeToEdge;
+import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.widget.Toolbar;
 import androidx.core.graphics.Insets;
 import androidx.core.view.ViewCompat;
 import androidx.core.view.WindowInsetsCompat;
@@ -27,10 +30,17 @@ public class TaskList extends AppCompatActivity implements SelectListener {
         EdgeToEdge.enable(this);
         setContentView(R.layout.activity_task_list);
         myDB = new MyDatabaseHelper(TaskList.this);
+        setUpAppBar();
         setupTaskList();
         displayItems();
     }
 
+    private void setUpAppBar() {
+        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
+        setSupportActionBar(toolbar);
+        ActionBar ab  =getSupportActionBar();
+        ab.setDisplayHomeAsUpEnabled(true);
+    }
     private void setupTaskList() {
         Cursor cursor = myDB.readAllData();
         if (cursor.getCount() == 0) {
@@ -53,9 +63,9 @@ public class TaskList extends AppCompatActivity implements SelectListener {
 
     @Override
     public void onItemClicked(TaskModel model) {
-        Toast.makeText(this, model.getName(), Toast.LENGTH_SHORT).show();
-//        Intent intent = new Intent(getApplicationContext(), FruitDetailActivity.class);
-//        intent.putExtra("fruit", model);
-//        startActivity(intent);
+//        Toast.makeText(this, model.getName(), Toast.LENGTH_SHORT).show();
+        Intent intent = new Intent(getApplicationContext(), TaskDetail.class);
+        intent.putExtra("task", model);
+        startActivity(intent);
     }
 }
