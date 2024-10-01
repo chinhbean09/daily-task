@@ -114,10 +114,10 @@
         app:layout_constraintVertical_bias="0.203">
 
         <Button
-            android:id="@+id/cancelButton"
+            android:id="@+id/deleteButton"
             android:layout_width="133dp"
             android:layout_height="48dp"
-            android:text="Cancel"
+            android:text="Delete"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintHorizontal_bias="0.942"
@@ -128,7 +128,7 @@
             android:id="@+id/updateButton"
             android:layout_width="133dp"
             android:layout_height="48dp"
-            android:text="Update"
+            android:text="Edit"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintHorizontal_bias="0.057"

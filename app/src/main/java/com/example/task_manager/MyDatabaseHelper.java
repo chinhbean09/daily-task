@@ -85,6 +85,13 @@ public class MyDatabaseHelper extends SQLiteOpenHelper {
         }
     }
 
-    public void deleteTask() {
+    public void deleteTask(String row_id) {
+        SQLiteDatabase db = this.getWritableDatabase();
+        long result = db.delete(TABLE_NAME, "_id=?", new String[]{row_id});
+        if (result == -1) {
+            Toast.makeText(context, "Delete Task Failed", Toast.LENGTH_SHORT).show();
+        } else {
+            Toast.makeText(context, "Delete task Successfully", Toast.LENGTH_SHORT).show();
+        }
     }
 }

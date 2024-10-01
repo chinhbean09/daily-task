@@ -1,7 +1,7 @@
 package com.example.task_manager;
 
+import android.content.DialogInterface;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
@@ -9,6 +9,7 @@ import android.widget.Toast;
 
 import androidx.activity.EdgeToEdge;
 import androidx.appcompat.app.ActionBar;
+import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 
@@ -37,6 +38,7 @@ public class TaskDetail extends AppCompatActivity {
             Toast.makeText(this, "No data. ", Toast.LENGTH_SHORT).show();
         }
         setUpUpdateBtn(model);
+        setUpDeleteBtn(model);
     }
 
     private void setUpIntentData(TaskModel model) {
@@ -71,13 +73,34 @@ public class TaskDetail extends AppCompatActivity {
     }
 
 
-    private void setUpCancelBtn() {
-        Button cancelBtn = findViewById(R.id.cancelButton);
-        cancelBtn.setOnClickListener(new View.OnClickListener() {
+    private void setUpDeleteBtn(TaskModel model) {
+        Button deleteBtn = findViewById(R.id.deleteButton);
+        deleteBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+                confirmDialog(model.getId());
+            }
+        });
+    }
+
+    private void confirmDialog(String id) {
+        AlertDialog.Builder builder = new AlertDialog.Builder(this);
+        builder.setTitle("Confirm");
+        builder.setMessage("Are you sure you want to delete this task?");
+        builder.setPositiveButton("Yes", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialogInterface, int i) {
+                MyDatabaseHelper myDB = new MyDatabaseHelper(TaskDetail.this);
+                myDB.deleteTask(id);
+                finish();
+            }
+        });
+        builder.setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialogInterface, int i) {
 
             }
         });
+        builder.create().show();
     }
 }
