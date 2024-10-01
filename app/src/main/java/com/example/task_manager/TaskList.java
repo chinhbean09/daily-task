@@ -21,6 +21,7 @@ public class TaskList extends AppCompatActivity implements SelectListener {
     TaskRecyclerViewAdapter adapter;
     RecyclerView recyclerView;
     MyDatabaseHelper myDB;
+//    Activity activity;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -56,16 +57,25 @@ public class TaskList extends AppCompatActivity implements SelectListener {
     private void displayItems() {
         recyclerView = findViewById(R.id.mRecyclerView);
         recyclerView.setHasFixedSize(true);
-        adapter = new TaskRecyclerViewAdapter(this, tasks, this);
+        adapter = new TaskRecyclerViewAdapter(TaskList.this, this, tasks, this);
         recyclerView.setAdapter(adapter);
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
     }
 
     @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        if (requestCode == 1) {
+            recreate();
+        }
+    }
+
+    @Override
     public void onItemClicked(TaskModel model) {
 //        Toast.makeText(this, model.getName(), Toast.LENGTH_SHORT).show();
-        Intent intent = new Intent(getApplicationContext(), TaskDetail.class);
-        intent.putExtra("task", model);
-        startActivity(intent);
+//        Intent intent = new Intent(getApplicationContext(), TaskDetail.class);
+//        intent.putExtra("task", model);
+//        startActivity(intent);
+//        activity.startActivityForResult(intent, 1);
     }
 }

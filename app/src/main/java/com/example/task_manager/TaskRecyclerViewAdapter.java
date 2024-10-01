@@ -1,6 +1,8 @@
 package com.example.task_manager;
 
+import android.app.Activity;
 import android.content.Context;
+import android.content.Intent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -14,8 +16,10 @@ public class TaskRecyclerViewAdapter extends RecyclerView.Adapter<TaskViewHolder
     private Context context;
     private ArrayList<TaskModel> taskList;
     private SelectListener listener;
+    Activity activity;
 
-    public TaskRecyclerViewAdapter(Context context, ArrayList<TaskModel> taskList, SelectListener listener) {
+    public TaskRecyclerViewAdapter(Activity activity, Context context, ArrayList<TaskModel> taskList, SelectListener listener) {
+        this.activity = activity;
         this.context = context;
         this.taskList = taskList;
         this.listener = listener;
@@ -36,7 +40,10 @@ public class TaskRecyclerViewAdapter extends RecyclerView.Adapter<TaskViewHolder
         holder.cardView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                listener.onItemClicked(taskList.get(position));
+                Intent intent = new Intent(context, TaskDetail.class);
+                TaskModel model = (TaskModel) taskList.get(position);
+                intent.putExtra("task", model);
+                activity.startActivityForResult(intent, 1);
             }
         });
     }
