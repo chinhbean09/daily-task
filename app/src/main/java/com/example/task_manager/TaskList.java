@@ -1,5 +1,6 @@
 package com.example.task_manager;
 
+import android.app.Activity;
 import android.content.Intent;
 import android.database.Cursor;
 import android.os.Bundle;
@@ -10,9 +11,6 @@ import androidx.activity.EdgeToEdge;
 import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
-import androidx.core.graphics.Insets;
-import androidx.core.view.ViewCompat;
-import androidx.core.view.WindowInsetsCompat;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -38,16 +36,18 @@ public class TaskList extends AppCompatActivity implements SelectListener {
     private void setUpAppBar() {
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
-        ActionBar ab  =getSupportActionBar();
+        ActionBar ab = getSupportActionBar();
         ab.setDisplayHomeAsUpEnabled(true);
     }
+
     private void setupTaskList() {
         Cursor cursor = myDB.readAllData();
         if (cursor.getCount() == 0) {
             Toast.makeText(this, "No data. ", Toast.LENGTH_SHORT).show();
         } else {
             while (cursor.moveToNext()) {
-                TaskModel task = new TaskModel(cursor.getString(1), cursor.getString(2));
+                TaskModel task = new TaskModel(cursor.getString(0), cursor.getString(1), cursor.getString(2), cursor.getString(3), cursor.getString(4));
+                Log.d("MyApp", "setupTaskList: " + task.toString());
                 tasks.add(task);
             }
         }

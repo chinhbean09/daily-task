@@ -70,7 +70,19 @@ public class MyDatabaseHelper extends SQLiteOpenHelper {
         return cursor;
     }
 
-    public void updateTask() {
+    public void updateTask(String row_id, String name, String time, String location, String description) {
+        SQLiteDatabase db = this.getWritableDatabase();
+        ContentValues cv = new ContentValues();
+        cv.put(COLUMN_NAME, name);
+        cv.put(COLUMN_TIME, time);
+        cv.put(COLUMN_LOCATION, location);
+        cv.put(COLUMN_DESCRIPTION, description);
+        long result = db.update(TABLE_NAME, cv, "_id=?", new String[]{row_id});
+        if (result == -1) {
+            Toast.makeText(context, "Update Task Failed", Toast.LENGTH_SHORT).show();
+        } else {
+            Toast.makeText(context, "Update task Successfully", Toast.LENGTH_SHORT).show();
+        }
     }
 
     public void deleteTask() {

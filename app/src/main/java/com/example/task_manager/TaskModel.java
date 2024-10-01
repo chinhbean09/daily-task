@@ -3,19 +3,38 @@ package com.example.task_manager;
 import java.io.Serializable;
 
 public class TaskModel implements Serializable {
-    String name;
-    String time;
-    String location;
-    String description;
+    private String id;
+    private String name;
+    private String time;
+    private String location;
+    private String description;
+
+    public TaskModel(String id, String name, String time, String location, String description) {
+        this.id = id;
+        this.name = name;
+        this.time = time;
+        this.location = location;
+        this.description = description;
+    }
 
     public TaskModel(String name, String time) {
         this.name = name;
         this.time = time;
     }
 
-    public TaskModel(String name, String time, String location, String description) {
+
+    public TaskModel(String id, String name, String time) {
+        this.id = id;
         this.name = name;
         this.time = time;
+    }
+
+    public String getId() {
+        return id;
+    }
+
+    public void setId(String id) {
+        this.id = id;
     }
 
     public String getName() {
@@ -50,11 +69,15 @@ public class TaskModel implements Serializable {
         this.description = description;
     }
 
+
     @Override
     public String toString() {
         return "TaskModel{" +
-                "name='" + name + '\'' +
+                "id='" + id + '\'' +
+                ", name='" + name + '\'' +
                 ", time='" + time + '\'' +
+                ", location='" + location + '\'' +
+                ", description='" + description + '\'' +
                 '}';
     }
 }
