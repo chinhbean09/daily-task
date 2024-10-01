@@ -1,14 +1,22 @@
 package com.example.task_manager;
 
-import android.app.Activity;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.database.Cursor;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
+import android.view.View;
+import android.widget.ImageView;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.activity.EdgeToEdge;
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.ActionBar;
+import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 import androidx.recyclerview.widget.LinearLayoutManager;
@@ -21,7 +29,8 @@ public class TaskList extends AppCompatActivity implements SelectListener {
     TaskRecyclerViewAdapter adapter;
     RecyclerView recyclerView;
     MyDatabaseHelper myDB;
-//    Activity activity;
+    TextView no_data;
+    ImageView no_data_img;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -42,8 +51,12 @@ public class TaskList extends AppCompatActivity implements SelectListener {
     }
 
     private void setupTaskList() {
+        no_data = findViewById(R.id.no_data);
+        no_data_img = findViewById(R.id.no_data_img);
         Cursor cursor = myDB.readAllData();
         if (cursor.getCount() == 0) {
+            no_data.setVisibility(View.VISIBLE);
+            no_data_img.setVisibility(View.VISIBLE);
             Toast.makeText(this, "No data. ", Toast.LENGTH_SHORT).show();
         } else {
             while (cursor.moveToNext()) {
@@ -51,6 +64,8 @@ public class TaskList extends AppCompatActivity implements SelectListener {
                 Log.d("MyApp", "setupTaskList: " + task.toString());
                 tasks.add(task);
             }
+            no_data.setVisibility(View.GONE);
+            no_data_img.setVisibility(View.GONE);
         }
     }
 
@@ -68,6 +83,45 @@ public class TaskList extends AppCompatActivity implements SelectListener {
         if (requestCode == 1) {
             recreate();
         }
+    }
+
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        MenuInflater inflater = getMenuInflater();
+        inflater.inflate(R.menu.task_list_menu, menu);
+        return super.onCreateOptionsMenu(menu);
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(@NonNull MenuItem item) {
+        if (item.getItemId() == R.id.actionDeleteAll) {
+            confirmDialog();
+        }
+        return super.onOptionsItemSelected(item);
+    }
+
+    private void confirmDialog() {
+        AlertDialog.Builder builder = new AlertDialog.Builder(this);
+        builder.setTitle("Confirm");
+        builder.setMessage("Are you sure you want to delete all tasks?");
+        builder.setPositiveButton("Yes", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialogInterface, int i) {
+                MyDatabaseHelper myDB = new MyDatabaseHelper(TaskList.this);
+                myDB.deleteAllTasks();
+                Intent intent = new Intent(TaskList.this, TaskList.class);
+                startActivity(intent);
+                recreate();
+                finish();
+            }
+        });
+        builder.setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialogInterface, int i) {
+
+            }
+        });
+        builder.create().show();
     }
 
     @Override
