@@ -94,4 +94,14 @@ public class MyDatabaseHelper extends SQLiteOpenHelper {
             Toast.makeText(context, "Delete task Successfully", Toast.LENGTH_SHORT).show();
         }
     }
+
+    public void deleteAllTasks() {
+        SQLiteDatabase db = this.getWritableDatabase();
+        long result = db.delete(TABLE_NAME, "1", null);
+        if (result == -1) {
+            Toast.makeText(context, "Delete All Task Failed", Toast.LENGTH_SHORT).show();
+        } else {
+            Toast.makeText(context, "Delete All task Successfully", Toast.LENGTH_SHORT).show();
+        }
+    }
 }
