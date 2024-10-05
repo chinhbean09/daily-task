@@ -30,12 +30,23 @@ public class MainActivity extends AppCompatActivity {
         setUpAppBar();
         setUpAddTaskButton();
         setUpTimePickerButton();
+
+        Button viewListButton = findViewById(R.id.viewListButton);
+        viewListButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(MainActivity.this, TaskList.class);
+                startActivity(intent);
+            }
+        });
     }
+
 
     private void setUpAppBar() {
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
     }
+
 
     private void setUpAddTaskButton() {
         EditText taskNameET = findViewById(R.id.taskNameEditText);

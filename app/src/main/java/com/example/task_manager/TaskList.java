@@ -5,6 +5,8 @@ import android.content.Intent;
 import android.database.Cursor;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.View;
+import android.widget.Button;
 import android.widget.Toast;
 
 import androidx.activity.EdgeToEdge;
@@ -32,13 +34,23 @@ public class TaskList extends AppCompatActivity implements SelectListener {
         setUpAppBar();
         setupTaskList();
         displayItems();
+
+        Button addTaskButton = findViewById(R.id.addTaskButton);
+        addTaskButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(TaskList.this, MainActivity.class);
+                startActivity(intent);
+            }
+        });
     }
+
 
     private void setUpAppBar() {
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
         ActionBar ab = getSupportActionBar();
-        ab.setDisplayHomeAsUpEnabled(true);
+        ab.setDisplayHomeAsUpEnabled(false);
     }
 
     private void setupTaskList() {
